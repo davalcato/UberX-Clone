@@ -1,0 +1,6 @@
+framework module Pods_UberXTests {
+  umbrella header "Pods-UberXTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
