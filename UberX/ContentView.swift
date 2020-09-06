@@ -85,6 +85,9 @@ struct MapView : UIViewRepresentable {
         map.delegate = context.coordinator
         manager.delegate = context.coordinator
         map.showsUserLocation = true
+        let gesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(context.coordinator.tap(ges:)))
+        map.addGestureRecognizer(gesture)
+        
         return map
     }
     
@@ -115,13 +118,27 @@ struct MapView : UIViewRepresentable {
                 self.parent.manager.startUpdatingLocation()
             }
         }
-        
+        // Update the location here...
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
             
             let region = MKCoordinateRegion(center: locations.last!.coordinate, latitudinalMeters: 10000, longitudinalMeters: 10000)
             self.parent.source = locations.last!.coordinate
             
             self.parent.map.region = region
+        }
+        // Here we add the tap gesture for annotations...
+        @objc func tap(ges: UITapGestureRecognizer){
+            
+            let location = ges.location(in: self.parent.map)
+            let mplocation = self.parent.map.convert(location, toCoordinateFrom: self.parent.map)
+            
+            let point = MKPointAnnotation()
+            point.title = "Marked"
+            point.subtitle = "Destination"
+            
+            point.coordinate = mplocation
+            self.parent.map.removeAnnotations(self.parent.map.annotations)
+            self.parent.map.addAnnotation(point)
         }
     }
 }
