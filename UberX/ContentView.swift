@@ -118,7 +118,10 @@ struct MapView : UIViewRepresentable {
         
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
             
+            let region = MKCoordinateRegion(center: locations.last!.coordinate, latitudinalMeters: 10000, longitudinalMeters: 10000)
             self.parent.source = locations.last!.coordinate
+            
+            self.parent.map.region = region
         }
     }
 }
