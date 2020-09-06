@@ -56,6 +56,11 @@ struct Home : View {
             }
         }
         .edgesIgnoringSafeArea(.all)
+        .alert(isPresented: self.$alert) { () -> Alert in
+            
+            Alert(title: Text("Error"), message: Text("Please enable Locations In Setting"), dismissButton: .destructive(Text("Ok")))
+            
+        }
     }
 }
 
