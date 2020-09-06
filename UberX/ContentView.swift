@@ -29,7 +29,7 @@ struct Home : View {
     @State var alert = false
     @State var source : CLLocationCoordinate2D!
     @State var destination : CLLocationCoordinate2D!
-    
+    @State var name = ""
     
     var body: some View{
         
@@ -39,8 +39,17 @@ struct Home : View {
                 
                 HStack{
                     
-                    Text("Pick a Location")
-                        .font(.title)
+                    VStack(alignment: .leading, spacing: 15) {
+                        
+                        Text("Pick a Location")
+                            .font(.title)
+                        
+                        if self.destination != nil{
+                            
+                            Text(self.name)
+                                .fontWeight(.bold)
+                        }
+                    }
                     
                     Spacer()
                 }
@@ -48,7 +57,7 @@ struct Home : View {
                 .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
                 .background(Color.white)
                 
-                MapView(map: self.$map, manager: self.$manager, alert: $alert, source: self.$source, destination: self.$destination)
+                MapView(map: self.$map, manager: self.$manager, alert: $alert, source: self.$source, destination: self.$destination, name: self.$name)
                     .onAppear {
                         
                         self.manager.requestAlwaysAuthorization()
@@ -77,7 +86,7 @@ struct MapView : UIViewRepresentable {
     @Binding var alert : Bool
     @Binding var source : CLLocationCoordinate2D!
     @Binding var destination : CLLocationCoordinate2D!
-    
+    @Binding var name : String
 
     func makeUIView(context: Context) -> MKMapView {
         
@@ -133,10 +142,25 @@ struct MapView : UIViewRepresentable {
             let mplocation = self.parent.map.convert(location, toCoordinateFrom: self.parent.map)
             
             let point = MKPointAnnotation()
-            point.title = "Marked"
             point.subtitle = "Destination"
-            
             point.coordinate = mplocation
+            
+            // here we describe the exact location...
+            let decoder = CLGeocoder()
+            decoder.reverseGeocodeLocation(CLLocation(latitude: mplocation.latitude, longitude: mplocation.longitude))
+            { (places, err) in
+                
+                if err != nil{
+                    
+                    print((err?.localizedDescription))
+                    return
+                }
+                
+                self.parent.name = places?.first?.name ?? ""
+                point.title = places?.first?.name ?? ""
+                
+            }
+            
             self.parent.map.removeAnnotations(self.parent.map.annotations)
             self.parent.map.addAnnotation(point)
         }
