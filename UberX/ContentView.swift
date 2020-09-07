@@ -145,6 +145,8 @@ struct MapView : UIViewRepresentable {
             point.subtitle = "Destination"
             point.coordinate = mplocation
             
+            self.parent.destination = mplocation
+            
             // here we describe the exact location...
             let decoder = CLGeocoder()
             decoder.reverseGeocodeLocation(CLLocation(latitude: mplocation.latitude, longitude: mplocation.longitude))
@@ -152,17 +154,50 @@ struct MapView : UIViewRepresentable {
                 
                 if err != nil{
                     
-                    print((err?.localizedDescription))
+                    print((err?.localizedDescription)!)
                     return
                 }
                 
                 self.parent.name = places?.first?.name ?? ""
                 point.title = places?.first?.name ?? ""
+            }
+            
+            let req = MKDirections.Request()
+            req.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 40.7127, longitude: -74.0059), addressDictionary: nil))
+            
+            req.destination = MKMapItem(placemark: MKPlacemark(coordinate: mplocation))
+            
+            let directions = MKDirections(request: req)
+            
+            directions.calculate { (dir, err) in
                 
+                if err != nil{
+                    
+                    print((err?.localizedDescription)!)
+                    return
+                }
+                
+                // here is where we add the polyline...
+                let polyline = dir?.routes[0].polyline
+                
+                self.parent.map.removeOverlays(self.parent.map.overlays)
+                
+                self.parent.map.addOverlay(polyline!)
+                
+                self.parent.map.setRegion(MKCoordinateRegion(polyline!.boundingMapRect), animated: true)
             }
             
             self.parent.map.removeAnnotations(self.parent.map.annotations)
             self.parent.map.addAnnotation(point)
+        }
+        
+        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+            
+            let over = MKPolylineRenderer(overlay: overlay)
+            over.strokeColor = .red
+            over.lineWidth = 3
+            return over
+            
         }
     }
 }
