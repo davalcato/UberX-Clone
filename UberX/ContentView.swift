@@ -30,10 +30,13 @@ struct Home : View {
     @State var source : CLLocationCoordinate2D!
     @State var destination : CLLocationCoordinate2D!
     @State var name = ""
+    @State var distance = ""
+    @State var time = ""
+    
     
     var body: some View{
         
-        ZStack{
+        ZStack(alignment: .bottom){
             
             VStack(spacing: 0){
                 
@@ -57,11 +60,51 @@ struct Home : View {
                 .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
                 .background(Color.white)
                 
-                MapView(map: self.$map, manager: self.$manager, alert: $alert, source: self.$source, destination: self.$destination, name: self.$name)
+                MapView(map: self.$map, manager: self.$manager, alert: $alert, source: self.$source, destination: self.$destination, name: self.$name,distance: self.$distance,time: self.$time)
                     .onAppear {
                         
                         self.manager.requestAlwaysAuthorization()
                 }
+            }
+            
+            if self.destination != nil{
+                
+                VStack(spacing: 20){
+                    
+                    HStack{
+                        
+                        VStack(spacing: 15){
+                            
+                            Text("Destination")
+                                .fontWeight(.bold)
+                            Text(self.name)
+                            
+                            Text("Distance - "+self.distance+" KM")
+                            
+                            Text("Expected Time - "+self.time + "Min")
+                            
+                        }
+                        
+                        Spacer()
+                    }
+                    
+                    Button(action: {
+                        
+                        
+                    }) {
+                        
+                        Text("Book Now")
+                            .foregroundColor(.white)
+                            .padding(.vertical, 10)
+                            .frame(width: UIScreen.main.bounds.width / 2)
+                    }
+                    .background(Color.red)
+                    .clipShape(Capsule())
+                }
+                .padding(.vertical, 10)
+                .padding(.horizontal)
+                .padding(.bottom, UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+                .background(Color.white)
             }
         }
         .edgesIgnoringSafeArea(.all)
@@ -87,7 +130,10 @@ struct MapView : UIViewRepresentable {
     @Binding var source : CLLocationCoordinate2D!
     @Binding var destination : CLLocationCoordinate2D!
     @Binding var name : String
-
+    @Binding var distance : String
+    @Binding var time : String
+    
+    
     func makeUIView(context: Context) -> MKMapView {
         
         
@@ -179,6 +225,14 @@ struct MapView : UIViewRepresentable {
                 
                 // here is where we add the polyline...
                 let polyline = dir?.routes[0].polyline
+                
+                // distance is measure here...
+                let dis = dir?.routes[0].distance as! Double
+                self.parent.distance = String(format: "%.1f", dis / 1000)
+                
+                let time = dir?.routes[0].expectedTravelTime as! Double
+                self.parent.time = String(format: "%.1f", time / 60)
+                
                 
                 self.parent.map.removeOverlays(self.parent.map.overlays)
                 
