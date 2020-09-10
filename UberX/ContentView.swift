@@ -32,7 +32,7 @@ struct Home : View {
     @State var name = ""
     @State var distance = ""
     @State var time = ""
-    
+    @State var show = false
     
     var body: some View{
         
@@ -60,46 +60,60 @@ struct Home : View {
                 .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
                 .background(Color.white)
                 
-                MapView(map: self.$map, manager: self.$manager, alert: $alert, source: self.$source, destination: self.$destination, name: self.$name,distance: self.$distance,time: self.$time)
+                MapView(map: self.$map, manager: self.$manager, alert: $alert, source: self.$source, destination: self.$destination, name: self.$name,distance: self.$distance,time: self.$time, show: self.$show)
                     .onAppear {
                         
                         self.manager.requestAlwaysAuthorization()
                 }
             }
             
-            if self.destination != nil{
+            if self.destination != nil && self.show{
                 
-                VStack(spacing: 20){
+                ZStack{
                     
-                    HStack{
+                    VStack(spacing: 20){
                         
-                        VStack(spacing: 15){
+                        HStack{
                             
-                            Text("Destination")
-                                .fontWeight(.bold)
-                            Text(self.name)
+                            VStack(alignment: .leading, spacing: 15){
+                                
+                                Text("Destination")
+                                    .fontWeight(.bold)
+                                Text(self.name)
+                                
+                                Text("Distance - "+self.distance+" KM")
+                                
+                                Text("Expected Time - "+self.time + "Min")
+                                
+                            }
                             
-                            Text("Distance - "+self.distance+" KM")
-                            
-                            Text("Expected Time - "+self.time + "Min")
-                            
+                            Spacer()
                         }
                         
-                        Spacer()
+                        Button(action: {
+                            
+                            
+                        }) {
+                            
+                            Text("Book Now")
+                                .foregroundColor(.white)
+                                .padding(.vertical, 10)
+                                .frame(width: UIScreen.main.bounds.width / 2)
+                        }
+                        .background(Color.red)
+                        .clipShape(Capsule())
                     }
                     
                     Button(action: {
                         
+                        self.show.toggle()
                         
                     }) {
                         
-                        Text("Book Now")
-                            .foregroundColor(.white)
-                            .padding(.vertical, 10)
-                            .frame(width: UIScreen.main.bounds.width / 2)
+                        Image(systemName: "xmark")
+                            .foregroundColor(.black)
                     }
-                    .background(Color.red)
-                    .clipShape(Capsule())
+                    
                 }
                 .padding(.vertical, 10)
                 .padding(.horizontal)
@@ -132,7 +146,7 @@ struct MapView : UIViewRepresentable {
     @Binding var name : String
     @Binding var distance : String
     @Binding var time : String
-    
+    @Binding var show : Bool
     
     func makeUIView(context: Context) -> MKMapView {
         
@@ -206,6 +220,8 @@ struct MapView : UIViewRepresentable {
                 
                 self.parent.name = places?.first?.name ?? ""
                 point.title = places?.first?.name ?? ""
+                
+                self.parent.show.toggle()
             }
             // added custom location coordinates here to get the red line drawn...
             let req = MKDirections.Request()
