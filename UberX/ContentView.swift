@@ -161,9 +161,9 @@ struct MapView : UIViewRepresentable {
                 self.parent.name = places?.first?.name ?? ""
                 point.title = places?.first?.name ?? ""
             }
-            
+            // added custom location coordinates here to get the red line drawn...
             let req = MKDirections.Request()
-            req.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 40.7127, longitude: -74.0059), addressDictionary: nil))
+            req.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 37.785834, longitude: -122.406417), addressDictionary: nil))
             
             req.destination = MKMapItem(placemark: MKPlacemark(coordinate: mplocation))
             
