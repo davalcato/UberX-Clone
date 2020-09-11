@@ -36,90 +36,101 @@ struct Home : View {
     
     var body: some View{
         
-        ZStack(alignment: .bottom){
+        ZStack{
             
-            VStack(spacing: 0){
+            ZStack(alignment: .bottom){
                 
-                HStack{
+                VStack(spacing: 0){
                     
-                    VStack(alignment: .leading, spacing: 15) {
+                    HStack{
                         
-                        Text("Pick a Location")
-                            .font(.title)
-                        
-                        if self.destination != nil{
+                        VStack(alignment: .leading, spacing: 15) {
                             
-                            Text(self.name)
-                                .fontWeight(.bold)
-                        }
-                    }
-                    
-                    Spacer()
-                }
-                .padding()
-                .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
-                .background(Color.white)
-                
-                MapView(map: self.$map, manager: self.$manager, alert: $alert, source: self.$source, destination: self.$destination, name: self.$name,distance: self.$distance,time: self.$time, show: self.$show)
-                    .onAppear {
-                        
-                        self.manager.requestAlwaysAuthorization()
-                }
-            }
-            
-            if self.destination != nil && self.show{
-                
-                ZStack(alignment: .topTrailing){
-                    
-                    VStack(spacing: 20){
-                        
-                        HStack{
+                            Text(self.destination != nil ? "Destination" : "Pick a Location")
+                                .font(.title)
                             
-                            VStack(alignment: .leading, spacing: 15){
+                            if self.destination != nil{
                                 
-                                Text("Destination")
-                                    .fontWeight(.bold)
                                 Text(self.name)
+                                    .fontWeight(.bold)
+                            }
+                        }
+                        
+                        Spacer()
+                    }
+                    .padding()
+                    .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
+                    .background(Color.white)
+                    
+                    MapView(map: self.$map, manager: self.$manager, alert: $alert, source: self.$source, destination: self.$destination, name: self.$name,distance: self.$distance,time: self.$time, show: self.$show)
+                        .onAppear {
+                            
+                            self.manager.requestAlwaysAuthorization()
+                    }
+                }
+                
+                if self.destination != nil && self.show{
+                    
+                    ZStack(alignment: .topTrailing){
+                        
+                        VStack(spacing: 20){
+                            
+                            HStack{
                                 
-                                Text("Distance - "+self.distance+" KM")
+                                VStack(alignment: .leading, spacing: 15){
+                                    
+                                    Text("Destination")
+                                        .fontWeight(.bold)
+                                    Text(self.name)
+                                    
+                                    Text("Distance - "+self.distance+" KM")
+                                    
+                                    Text("Expected Time - "+self.time + "Min")
+                                    
+                                }
                                 
-                                Text("Expected Time - "+self.time + "Min")
-                                
+                                Spacer()
                             }
                             
-                            Spacer()
+                            Button(action: {
+                                
+                                
+                            }) {
+                                
+                                Text("Book Now")
+                                    .foregroundColor(.white)
+                                    .padding(.vertical, 10)
+                                    .frame(width: UIScreen.main.bounds.width / 2)
+                            }
+                            .background(Color.red)
+                            .clipShape(Capsule())
                         }
                         
                         Button(action: {
                             
+                            self.map.removeOverlays(self.map.overlays)
+                            self.map.removeAnnotations(self.map.annotations)
+                            self.destination = nil
+                            
+                            
+                            self.show.toggle()
                             
                         }) {
                             
-                            Text("Book Now")
-                                .foregroundColor(.white)
-                                .padding(.vertical, 10)
-                                .frame(width: UIScreen.main.bounds.width / 2)
+                            Image(systemName: "xmark")
+                                .foregroundColor(.black)
                         }
-                        .background(Color.red)
-                        .clipShape(Capsule())
+                        
                     }
-                    
-                    Button(action: {
-                        
-                        self.show.toggle()
-                        
-                    }) {
-                        
-                        Image(systemName: "xmark")
-                            .foregroundColor(.black)
-                    }
-                    
+                    .padding(.vertical, 10)
+                    .padding(.horizontal)
+                    .padding(.bottom, UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+                    .background(Color.white)
                 }
-                .padding(.vertical, 10)
-                .padding(.horizontal)
-                .padding(.bottom, UIApplication.shared.windows.first?.safeAreaInsets.bottom)
-                .background(Color.white)
             }
+            
+            Loader()
+            
         }
         .edgesIgnoringSafeArea(.all)
         .alert(isPresented: self.$alert) { () -> Alert in
@@ -129,6 +140,40 @@ struct Home : View {
         }
     }
 }
+
+struct Loader : View {
+    
+    @State var show = false
+    var body: some View{
+        
+        GeometryReader{_ in
+            
+            VStack(spacing: 20){
+                
+                Circle()
+                    .trim(from: 0, to: 0.7)
+                    .stroke(Color.red, style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                    .frame(width: 30, height: 30)
+                    .rotationEffect(.init(degrees: self.show ? 360 : 0))
+                    .onAppear {
+                        
+                        withAnimation(Animation.default.speed(0.45).repeatForever(autoreverses: false)){
+                            
+                            self.show.toggle()
+                        }
+                    }
+                
+                Text("Please Wait....")
+            }
+            .padding(.vertical, 25)
+            .padding(.horizontal, 40)
+            .background(Color.white)
+            .cornerRadius(12)
+        }
+        .background(Color.black.opacity(0.25).edgesIgnoringSafeArea(.all))
+    }
+}
+
 
 struct MapView : UIViewRepresentable {
     
