@@ -69,7 +69,7 @@ struct Home : View {
             
             if self.destination != nil && self.show{
                 
-                ZStack{
+                ZStack(alignment: .topTrailing){
                     
                     VStack(spacing: 20){
                         
