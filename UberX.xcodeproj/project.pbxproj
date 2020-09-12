@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,7 @@
 		75A028A525042C5300B8EB37 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75A028A425042C5300B8EB37 /* Preview Assets.xcassets */; };
 		75A028B025042C5300B8EB37 /* UberXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A028AF25042C5300B8EB37 /* UberXTests.swift */; };
 		75A028BB25042C5400B8EB37 /* UberXUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A028BA25042C5400B8EB37 /* UberXUITests.swift */; };
+		75A55FAE250D64CE0026D745 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 75A55FAD250D64CE0026D745 /* GoogleService-Info.plist */; };
 		905A96047F0E44E148959B9E /* Pods_UberXTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAB5BC12CDA35D1DAD5BC5ED /* Pods_UberXTests.framework */; };
 		E40646605478F33F11BEC819 /* Pods_UberX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F53135612F584E63B62F57 /* Pods_UberX.framework */; };
 /* End PBXBuildFile section */
@@ -50,6 +51,7 @@
 		75A028B625042C5400B8EB37 /* UberXUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UberXUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		75A028BA25042C5400B8EB37 /* UberXUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberXUITests.swift; sourceTree = "<group>"; };
 		75A028BC25042C5400B8EB37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		75A55FAD250D64CE0026D745 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		832CE6979FFCA3514DA0A9F6 /* Pods-UberX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberX.debug.xcconfig"; path = "Target Support Files/Pods-UberX/Pods-UberX.debug.xcconfig"; sourceTree = "<group>"; };
 		90F53135612F584E63B62F57 /* Pods_UberX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UberX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A762D89270E6F1134C1B1C85 /* Pods-UberX-UberXUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberX-UberXUITests.release.xcconfig"; path = "Target Support Files/Pods-UberX-UberXUITests/Pods-UberX-UberXUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 		75A0289C25042C5000B8EB37 /* UberX */ = {
 			isa = PBXGroup;
 			children = (
+				75A55FAD250D64CE0026D745 /* GoogleService-Info.plist */,
 				75A0289D25042C5000B8EB37 /* UberXApp.swift */,
 				75A0289F25042C5000B8EB37 /* ContentView.swift */,
 				75A028A125042C5300B8EB37 /* Assets.xcassets */,
@@ -167,7 +170,6 @@
 				CE9EF248459527FE06463B2D /* Pods-UberXTests.debug.xcconfig */,
 				F0A1F530A58D6C28487AB007 /* Pods-UberXTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -281,6 +283,7 @@
 			files = (
 				75A028A525042C5300B8EB37 /* Preview Assets.xcassets in Resources */,
 				75A028A225042C5300B8EB37 /* Assets.xcassets in Resources */,
+				75A55FAE250D64CE0026D745 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

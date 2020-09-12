@@ -8,6 +8,7 @@
 import SwiftUI
 import MapKit
 import CoreLocation
+import Firebase
 
 struct ContentView: View {
     var body: some View {
@@ -34,6 +35,10 @@ struct Home : View {
     @State var time = ""
     @State var show = false
     @State var loading = false
+    @State var book = false
+    @State var doc = ""
+    
+    
     var body: some View{
         
         ZStack{
@@ -94,6 +99,9 @@ struct Home : View {
                             
                             Button(action: {
                                 
+                                self.loading.toggle()
+                                
+                                self.Book()
                                 
                             }) {
                                 
@@ -139,8 +147,14 @@ struct Home : View {
         .alert(isPresented: self.$alert) { () -> Alert in
             
             Alert(title: Text("Error"), message: Text("Please enable Locations In Setting"), dismissButton: .destructive(Text("Ok")))
-            
         }
+    }
+    
+    func Book(){
+        
+        let db = Firestore.firestore()
+        let doc = db.collection("Booking").document()
+        
     }
 }
 
@@ -269,7 +283,7 @@ struct MapView : UIViewRepresentable {
                 self.parent.name = places?.first?.name ?? ""
                 point.title = places?.first?.name ?? ""
                 
-                self.parent.show.toggle()
+                self.parent.show = true
             }
             // added custom location coordinates here to get the red line drawn...
             let req = MKDirections.Request()
@@ -356,6 +370,7 @@ struct Booked : View {
         .background(Color.black.opacity(0.25).edgesIgnoringSafeArea(.all))
     }
 }
+
 
 
 

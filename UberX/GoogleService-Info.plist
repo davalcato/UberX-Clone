@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>606568035606-dm1cc9dd2nuga2edb37qd3na7f9rm49l.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.606568035606-dm1cc9dd2nuga2edb37qd3na7f9rm49l</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCvJj0mMis8xhBSkPwZnRz9QOFUh2hzBsI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>606568035606</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.Me2.Nike.UberX</string>
+	<key>PROJECT_ID</key>
+	<string>uberx-f1dc7</string>
+	<key>STORAGE_BUCKET</key>
+	<string>uberx-f1dc7.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:606568035606:ios:f5bb86b9e65f125e06cc37</string>
+	<key>DATABASE_URL</key>
+	<string>https://uberx-f1dc7.firebaseio.com</string>
+</dict>
+</plist>
