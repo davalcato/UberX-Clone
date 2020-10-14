@@ -9,6 +9,8 @@ import SwiftUI
 import MapKit
 import CoreLocation
 import Firebase
+import FirebaseFirestore
+
 
 struct ContentView: View {
     var body: some View {
@@ -37,7 +39,7 @@ struct Home : View {
     @State var loading = false
     @State var book = false
     @State var doc = ""
-    
+    @State var data : Data = .init(count: 0)
     
     var body: some View{
         
@@ -142,6 +144,11 @@ struct Home : View {
                 Loader()
             }
             
+            if self.book{
+                
+                Booked(data: self.$data, doc: self.$doc, loading: self.$loading, book: self.$book)
+                
+            }
         }
         .edgesIgnoringSafeArea(.all)
         .alert(isPresented: self.$alert) { () -> Alert in
@@ -154,7 +161,28 @@ struct Home : View {
         
         let db = Firestore.firestore()
         let doc = db.collection("Booking").document()
+        self.doc = doc.documentID
         
+        let from = GeoPoint(latitude: self.source.latitude, longitude: self.source.longitude)
+        let to = GeoPoint(latitude: self.destination.latitude, longitude: self.destination.longitude)
+        
+        doc.setData(["name":"UberX","from":from,"to":to, "distance":self.distance,"fair":(self.distance as NSString).floatValue * 1.2]) { (err) in
+            
+            if err != nil{
+                
+                print((err?.localizedDescription)!)
+                return
+            }
+            
+            let filter = CIFilter(name: "CIQRCodeGenerator")
+            filter?.setValue(self.doc.data(using: .ascii), forKey: "inputMessage")
+            let image = UIImage(ciImage: (filter?.outputImage?.transformed(by: CGAffineTransform(scaleX: 5, y: 5)))!)
+            
+            self.data = image.pngData()!
+            
+            self.loading.toggle()
+            self.book.toggle()
+        }
     }
 }
 
@@ -190,7 +218,6 @@ struct Loader : View {
         .background(Color.black.opacity(0.25).edgesIgnoringSafeArea(.all))
     }
 }
-
 
 struct MapView : UIViewRepresentable {
     
@@ -238,7 +265,7 @@ struct MapView : UIViewRepresentable {
             
         }
         
-        func locationManager(_manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        private func locationManager(_manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
             
             if status == .denied{
                 
@@ -305,11 +332,11 @@ struct MapView : UIViewRepresentable {
                 let polyline = dir?.routes[0].polyline
                 
                 // distance is measure here...
-                let dis = dir?.routes[0].distance as! Double
-                self.parent.distance = String(format: "%.1f", dis / 1000)
+                let dis = dir?.routes[0].distance
+                self.parent.distance = String(format: "%.1f", dis! / 1000)
                 
-                let time = dir?.routes[0].expectedTravelTime as! Double
-                self.parent.time = String(format: "%.1f", time / 60)
+                let time = dir?.routes[0].expectedTravelTime
+                self.parent.time = String(format: "%.1f", time! / 60)
                 
                 
                 self.parent.map.removeOverlays(self.parent.map.overlays)

@@ -124,11 +124,11 @@
 		75A0289C25042C5000B8EB37 /* UberX */ = {
 			isa = PBXGroup;
 			children = (
-				75A55FAD250D64CE0026D745 /* GoogleService-Info.plist */,
 				75A0289D25042C5000B8EB37 /* UberXApp.swift */,
 				75A0289F25042C5000B8EB37 /* ContentView.swift */,
-				75A028A125042C5300B8EB37 /* Assets.xcassets */,
 				75A028A625042C5300B8EB37 /* Info.plist */,
+				75A55FAD250D64CE0026D745 /* GoogleService-Info.plist */,
+				75A028A125042C5300B8EB37 /* Assets.xcassets */,
 				75A028A325042C5300B8EB37 /* Preview Content */,
 			);
 			path = UberX;

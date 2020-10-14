@@ -9,6 +9,12 @@ target 'UberX' do
     pod 'SwiftyJSON'
     pod 'Firebase/Analytics'
     pod 'FirebaseFirestore'
+    pod 'Firebase/Messaging'
+    pod 'Firebase/Database'
+    pod 'Firebase'
+    pod 'Firebase/Auth'
+    pod 'Firebase/Core'	
+
 
 
 

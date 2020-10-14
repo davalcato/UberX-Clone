@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import FirebaseCore
 
 @main
 struct UberXApp: App {
@@ -20,12 +21,17 @@ struct UberXApp: App {
 class AppDelegate: NSObject, UIApplicationDelegate {
     
     var window: UIWindow?
-
+    
       func application(_ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions:
             [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         FirebaseApp.configure()
+            let db = Firestore.firestore()
+            let settings =  db.settings
+            db.settings = settings
+        
+        Database.database().reference()
         
         return true
       }
